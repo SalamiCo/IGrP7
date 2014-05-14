@@ -26,6 +26,8 @@ public:
 
 	virtual void dibuja();
 
+	Objeto3D* getHijo(int n);
+
 	void traslacionEscena(GLfloat x, GLfloat y, GLfloat z);
 	void escalacionEscena(GLfloat x, GLfloat y, GLfloat z);
 	void rotacionEscena(GLfloat angle, GLfloat x, GLfloat y, GLfloat z);

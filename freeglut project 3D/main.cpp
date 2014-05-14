@@ -326,6 +326,16 @@ void key(unsigned char key, int x, int y){
 			escena->rotacionEscena(-2,0,1,0);
 			break;
 
+		//Escalar lámpara
+		case 'a': 
+			escena->getHijo(15)->getTAfin()->escalacion(1, 1.1, 1);
+			escena->getHijo(15)->getTAfin()->traslacion(0, -1, 0);
+			break;
+		case 'z':
+			escena->getHijo(15)->getTAfin()->escalacion(1, 0.9, 1);
+			escena->getHijo(15)->getTAfin()->traslacion(0, 1, 0);
+			break;
+
 		default:
 			need_redisplay = false;
 			break;
