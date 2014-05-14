@@ -54,6 +54,8 @@ ObjetoCompuesto3D* escena;
 
 bool on = true;
 
+bool luzRemotaOn = true;
+
 void buildScene() {
 	//escena = new ObjetoCompuesto3D();
 	escena = new MesaBillar();
@@ -87,6 +89,16 @@ void initGL() {
     glLightfv(GL_LIGHT0, GL_AMBIENT, a);
 	GLfloat p[]={25.0, 25.0, 0.0, 1.0};	 
 	glLightfv(GL_LIGHT0, GL_POSITION, p);
+
+
+	//Light2
+	glEnable(GL_LIGHT2);
+	GLfloat p2[]={1.0, 1.0, 0.0, 0.0};
+	glLightfv(GL_LIGHT2, GL_POSITION, p2);
+	GLfloat d2[]={1.0,1.0,1.0,1.0};
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, d2);
+    GLfloat a2[]={0.3f,0.3f,0.3f,1.0};
+    glLightfv(GL_LIGHT2, GL_AMBIENT, a2);
  }
 
 void display(void) {
@@ -354,6 +366,17 @@ void key(unsigned char key, int x, int y){
 		case 'z':
 			escena->getHijo(15)->getTAfin()->escalacion(1, 0.9, 1);
 			escena->getHijo(15)->getTAfin()->traslacion(0, 1, 0);
+			break;
+
+		//Luz remota del este
+		case 'w':
+			if(luzRemotaOn){
+				luzRemotaOn = false;
+				glDisable(GL_LIGHT2);
+			} else {
+				luzRemotaOn = true;
+				glEnable(GL_LIGHT2);
+			}
 			break;
 
 		default:
