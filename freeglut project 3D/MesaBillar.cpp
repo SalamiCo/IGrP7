@@ -38,6 +38,9 @@ MesaBillar::MesaBillar(void){
 	//Tiza
 	Objeto3D* tiza = new TCubo(0.1, 0.3, 4.4, 5.7, 1, 1, 1, colorBlanco, 0);
 
+	//Lampara
+	Objeto3D* lampara = new TCilindro(1, 0.3, 1, 10, 4, 5, 9, 3, 270, 1, 0, 0, colorBlanco);
+
 	//Añadir objetos
 	addHijo(tablero);
 
@@ -59,6 +62,8 @@ MesaBillar::MesaBillar(void){
 	addHijo(punta);
 
 	addHijo(tiza);
+
+	addHijo(lampara);
 
 	TAfin* ta = new TAfin();
 	this->tAfin = ta;
