@@ -55,6 +55,7 @@ ObjetoCompuesto3D* escena;
 bool on = true;
 
 bool luzRemotaOn = true;
+bool nieblaOn = true;
 
 void buildScene() {
 	//escena = new ObjetoCompuesto3D();
@@ -99,6 +100,12 @@ void initGL() {
     glLightfv(GL_LIGHT2, GL_DIFFUSE, d2);
     GLfloat a2[]={0.3f,0.3f,0.3f,1.0};
     glLightfv(GL_LIGHT2, GL_AMBIENT, a2);
+
+	//Niebla
+	glEnable(GL_FOG);
+	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogi(GL_FOG_START, 20);
+	glFogi(GL_FOG_START, 50);
  }
 
 void display(void) {
@@ -368,7 +375,7 @@ void key(unsigned char key, int x, int y){
 			escena->getHijo(15)->getTAfin()->traslacion(0, 1, 0);
 			break;
 
-		//Luz remota del este
+		// Activar/desactivar luz remota del este
 		case 'w':
 			if(luzRemotaOn){
 				luzRemotaOn = false;
@@ -376,6 +383,17 @@ void key(unsigned char key, int x, int y){
 			} else {
 				luzRemotaOn = true;
 				glEnable(GL_LIGHT2);
+			}
+			break;
+
+		// Activar/desactivar niebla
+		case '0':
+			if(nieblaOn){
+				nieblaOn = false;
+				glDisable(GL_FOG);
+			} else {
+				nieblaOn = true;
+				glEnable(GL_FOG);
 			}
 			break;
 
