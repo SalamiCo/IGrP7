@@ -55,6 +55,9 @@ ObjetoCompuesto3D* escena;
 bool globalOn = true;
 bool lamparaOn = true;
 
+bool luzRemotaOn = true;
+bool nieblaOn = true;
+
 void buildScene() {
 	//escena = new ObjetoCompuesto3D();
 	escena = new MesaBillar();
@@ -103,6 +106,21 @@ void initGL() {
 	GLfloat dir[] = {0.0,-1.0,0.0};
 	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, dir);
 	lamparaOn = true;
+
+	//Light2
+	glEnable(GL_LIGHT2);
+	GLfloat p2[]={1.0, 1.0, 0.0, 0.0};
+	glLightfv(GL_LIGHT2, GL_POSITION, p2);
+	GLfloat d2[]={1.0,1.0,1.0,1.0};
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, d2);
+    GLfloat a2[]={0.3f,0.3f,0.3f,1.0};
+    glLightfv(GL_LIGHT2, GL_AMBIENT, a2);
+
+	//Niebla
+	glEnable(GL_FOG);
+	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogi(GL_FOG_START, 20);
+	glFogi(GL_FOG_START, 50);
  }
 
 void display(void) {
@@ -348,13 +366,15 @@ void key(unsigned char key, int x, int y){
 			if(globalOn){
 				globalOn = false;
 				glDisable(GL_LIGHT0);
-				//glDisable(GL_LIGHTING);
+				glDisable(GL_LIGHT1);
+				glDisable(GL_LIGHT2);
 				GLfloat amb[] = {0.0,0.0,0.0,1.0};
 				glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 			} else {
 				globalOn = true;
-				//glEnable(GL_LIGHTING);
 				glEnable(GL_LIGHT0);
+				glEnable(GL_LIGHT1);
+				glEnable(GL_LIGHT2);
 				GLfloat amb[] = {0.2,0.2,0.2,1.0};
 				glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 			}
@@ -379,6 +399,26 @@ void key(unsigned char key, int x, int y){
 			}
 			break;
 
+		case 'w': // Activar/desactivar luz remota del este
+			if(luzRemotaOn){
+				luzRemotaOn = false;
+				glDisable(GL_LIGHT2);
+			} else {
+				luzRemotaOn = true;
+				glEnable(GL_LIGHT2);
+			}
+			break;
+		
+		case '0': // Activar/desactivar niebla
+			if(nieblaOn){
+				nieblaOn = false;
+				glDisable(GL_FOG);
+			} else {
+				nieblaOn = true;
+				glEnable(GL_FOG);
+			}
+			break;
+
 		default:
 			need_redisplay = false;
 			break;
@@ -386,6 +426,10 @@ void key(unsigned char key, int x, int y){
 
 	if (need_redisplay)
 		glutPostRedisplay();
+}
+
+float calculateLampAngle(float a, float b){
+	//Con hipotenusa y cateto(a) halla angulo. sen(alfa)=a/h
 }
 
 int main(int argc, char *argv[]){
