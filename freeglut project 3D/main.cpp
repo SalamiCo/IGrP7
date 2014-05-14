@@ -52,6 +52,8 @@ PV3D d = PV3D(0.1, 0.1, 1, 0); //Para proyección oblicua
 
 ObjetoCompuesto3D* escena;
 
+bool on = true;
+
 void buildScene() {
 	//escena = new ObjetoCompuesto3D();
 	escena = new MesaBillar();
@@ -64,9 +66,9 @@ void buildScene() {
 void initGL() {	 	
 	buildScene();
 
-	//glClearColor(0.6f,0.7f,0.8f,1.0);
 	glClearColor(0.0f,0.0f,0.0f,1.0);
-    glEnable(GL_LIGHTING);    
+    glEnable(GL_LIGHTING);
+	on = true;
 
 	glEnable(GL_COLOR_MATERIAL);
 	glMaterialf(GL_FRONT, GL_SHININESS, 0.1f);
@@ -319,11 +321,29 @@ void key(unsigned char key, int x, int y){
 			escena->escalacionEscena(1, 0.5, 1);
 			break;
 
-		case '8':
+		case '8': //Rotacion escena
 			escena->rotacionEscena(2,0,1,0);
 			break;
 		case '9':
 			escena->rotacionEscena(-2,0,1,0);
+			break;
+
+		case 't': //Encender/apagar luz ambiente global
+			if(on){
+				on = false;
+				glDisable(GL_LIGHT0);
+				//glDisable(GL_LIGHTING);
+			} else {
+				on = true;
+				//glEnable(GL_LIGHTING);
+				glEnable(GL_LIGHT0);
+				GLfloat d[]={1.0,1.0,1.0,1.0};
+				glLightfv(GL_LIGHT0, GL_DIFFUSE, d);
+				GLfloat a[]={0.3f,0.3f,0.3f,1.0};
+				glLightfv(GL_LIGHT0, GL_AMBIENT, a);
+				GLfloat p[]={25.0, 25.0, 0.0, 0.0};	 
+				glLightfv(GL_LIGHT0, GL_POSITION, p);
+			}
 			break;
 
 		default:
