@@ -52,7 +52,8 @@ PV3D d = PV3D(0.1, 0.1, 1, 0); //Para proyección oblicua
 
 ObjetoCompuesto3D* escena;
 
-bool on = true;
+bool globalOn = true;
+bool lamparaOn = true;
 
 void buildScene() {
 	//escena = new ObjetoCompuesto3D();
@@ -68,7 +69,7 @@ void initGL() {
 
 	glClearColor(0.0f,0.0f,0.0f,1.0);
     glEnable(GL_LIGHTING);
-	on = true;
+	globalOn = true;
 
 	glEnable(GL_COLOR_MATERIAL);
 	glMaterialf(GL_FRONT, GL_SHININESS, 0.1f);
@@ -87,6 +88,21 @@ void initGL() {
     glLightfv(GL_LIGHT0, GL_AMBIENT, a);
 	GLfloat p[]={25.0, 25.0, 0.0, 1.0};	 
 	glLightfv(GL_LIGHT0, GL_POSITION, p);
+	
+	// Light1 - Lampara
+	glEnable(GL_LIGHT1);
+	GLfloat d1[]={1.0,1.0,1.0,1.0};
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, d1);
+    GLfloat a1[]={0.3f,0.3f,0.3f,1.0};
+    glLightfv(GL_LIGHT1, GL_AMBIENT, a1);
+	GLfloat pos[] = {5.0, 12.0, 3.0, 1.0};
+	glLightfv(GL_LIGHT1, GL_POSITION, pos);
+	
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 26.74);
+	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 4.0);
+	GLfloat dir[] = {0.0,-1.0,0.0};
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, dir);
+	lamparaOn = true;
  }
 
 void display(void) {
@@ -329,31 +345,38 @@ void key(unsigned char key, int x, int y){
 			break;
 
 		case 't': //Encender/apagar luz ambiente global
-			if(on){
-				on = false;
+			if(globalOn){
+				globalOn = false;
 				glDisable(GL_LIGHT0);
 				//glDisable(GL_LIGHTING);
+				GLfloat amb[] = {0.0,0.0,0.0,1.0};
+				glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 			} else {
-				on = true;
+				globalOn = true;
 				//glEnable(GL_LIGHTING);
 				glEnable(GL_LIGHT0);
-				GLfloat d[]={1.0,1.0,1.0,1.0};
-				glLightfv(GL_LIGHT0, GL_DIFFUSE, d);
-				GLfloat a[]={0.3f,0.3f,0.3f,1.0};
-				glLightfv(GL_LIGHT0, GL_AMBIENT, a);
-				GLfloat p[]={25.0, 25.0, 0.0, 0.0};	 
-				glLightfv(GL_LIGHT0, GL_POSITION, p);
+				GLfloat amb[] = {0.2,0.2,0.2,1.0};
+				glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 			}
 			break;
 
-		//Escalar lámpara
-		case 'a': 
+		case 'a': //Escalar lámpara
 			escena->getHijo(15)->getTAfin()->escalacion(1, 1.1, 1);
 			escena->getHijo(15)->getTAfin()->traslacion(0, -1, 0);
 			break;
 		case 'z':
 			escena->getHijo(15)->getTAfin()->escalacion(1, 0.9, 1);
 			escena->getHijo(15)->getTAfin()->traslacion(0, 1, 0);
+			break;
+
+		case 'q': //Encender/apagar lámpara
+			if(lamparaOn){
+				lamparaOn = false;
+				glDisable(GL_LIGHT1);
+			} else {
+				lamparaOn = true;
+				glEnable(GL_LIGHT1);
+			}
 			break;
 
 		default:
