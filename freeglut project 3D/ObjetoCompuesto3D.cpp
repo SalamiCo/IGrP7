@@ -5,13 +5,17 @@
 
 ObjetoCompuesto3D::ObjetoCompuesto3D(void)
 {
-	this->hijos = new Objeto3D*[30]; //30 por defecto
+	this->hijos = new Objeto3D*[100]; //100 por defecto
 	this->numHijos = 0;
 }
 
 void ObjetoCompuesto3D::addHijo(Objeto3D* obj){
 	hijos[numHijos] = obj;
 	numHijos++;
+}
+
+Objeto3D* ObjetoCompuesto3D::getHijo(int n){
+	return this->hijos[n];
 }
 
 void ObjetoCompuesto3D::dibuja(){
