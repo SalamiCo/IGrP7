@@ -33,6 +33,8 @@ void Malla::dibuja(bool rellena, bool normales){
 	glRotated(angleY, 0,1,0);
 	glRotated(angleZ, 0,0,1);
 
+	glEnable(GL_TEXTURE_2D);
+
 	for(int i = 0; i < numCaras; i++){
 		glColor3f(0.f, 0.f, 1.f);
 		glLineWidth(1.0);
@@ -57,6 +59,23 @@ void Malla::dibuja(bool rellena, bool normales){
 			int iN = cara[i]->getIndiceNormalK(j);
 			int iV = cara[i]->getIndiceVerticeK(j);
 			glNormal3f(normal[iN]->getX(), normal[iN]->getY(), normal[iN]->getZ());
+
+			//Textura
+			/*if(i == 3){
+				switch (j) {
+					case 0: glTexCoord2f(0, 0); break;
+					case 1: glTexCoord2f(0, 1); break;
+					case 2: glTexCoord2f(1, 1); break;
+					case 3: glTexCoord2f(1, 0); break;
+				}
+			}*/
+			if(i >= 15){
+				//TODO: seleccionar la textura madera (método creado en main.cpp)
+				glTexCoord3f(vertice[iV]->getX(), vertice[iV]->getY(), vertice[iV]->getZ());
+			} else {
+				//TODO: seleccionar la textura tapete (método creado en main.cpp)
+			}
+
 			glVertex3f(vertice[iV]->getX(), vertice[iV]->getY(), vertice[iV]->getZ());
 		}
 		glEnd();
@@ -74,6 +93,8 @@ void Malla::dibuja(bool rellena, bool normales){
 			glEnd();
 		}
 	}
+	glDisable(GL_TEXTURE_2D);
+
 	glPopMatrix();
 }
 

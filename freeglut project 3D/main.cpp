@@ -18,6 +18,7 @@ using namespace std;
 #include "PV3D.h"
 #include "ObjetoCompuesto3D.h"
 #include "MesaBillar.h"
+#include "TextureLoader.h"
 
 // Freeglut parameters
 // Flag telling us to keep processing events
@@ -50,6 +51,8 @@ GLdouble angleGiraZ = 0.0;
 
 float lampHeight = 1.0;
 
+GLuint texturas[2];
+
 PV3D d = PV3D(0.1, 0.1, 1, 0); //Para proyección oblicua
 
 ObjetoCompuesto3D* escena;
@@ -71,13 +74,16 @@ float calculateLampAngle(float a, float b){
 	return degrees;
 }
 
+void selectTexture(int i){
+	glBindTexture(GL_TEXTURE_2D, texturas[i]);
+}
+
 void buildScene() {
 	//escena = new ObjetoCompuesto3D();
 	escena = new MesaBillar();
 
 	// Camera set up
 	camera = Camara(PV3D(eyeX, eyeY, eyeZ, 1), PV3D(lookX, lookY, lookZ, 1), PV3D(upX, upY, upZ, 0));
-
 }
 
 void initGL() {	 	
@@ -138,6 +144,47 @@ void initGL() {
 	//glFogf(GL_FOG_DENSITY, 0.5f);
 	glFogi(GL_FOG_START, 20);
 	glFogi(GL_FOG_END, 50);
+
+	//Texturas
+	unsigned int width;
+	unsigned int height;
+	unsigned char * data = loadBMPRaw("./bmp/madera.bmp", width, height);
+	unsigned char * data2 = loadBMPRaw("./bmp/grass.bmp", width, height);
+	cout<< width << endl;
+	cout<< height << endl;
+
+	glGenTextures(2, texturas);
+	//glGenTextures(1, &textureID);
+
+	//glEnable(GL_TEXTURE_2D);
+	//Leer en la variable textura, el archivo que contiene la imagen 
+	//usando la clase lectora
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+
+	//Textura mesa
+	glBindTexture(GL_TEXTURE_2D, texturas[0]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+
+	//Textura tapete
+	glBindTexture(GL_TEXTURE_2D, texturas[1]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data2);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
  }
 
 void display(void) {
@@ -162,7 +209,6 @@ void display(void) {
 
 	//Our code
 	escena->dibuja();
-
 	
 	glFlush();
 	glutSwapBuffers();
