@@ -48,6 +48,8 @@ GLdouble angleGiraX = 0.0;
 GLdouble angleGiraY = 0.0;
 GLdouble angleGiraZ = 0.0;
 
+float lampHeight = 1.0;
+
 PV3D d = PV3D(0.1, 0.1, 1, 0); //Para proyección oblicua
 
 ObjetoCompuesto3D* escena;
@@ -57,6 +59,17 @@ bool lamparaOn = true;
 
 bool luzRemotaOn = true;
 bool nieblaOn = true;
+
+float calculateLampAngle(float a, float b){
+	//Con hipotenusa y cateto(a) halla angulo. sen(alfa)=a/h
+	float h = sqrt(pow(a, 2) + pow(b, 2));
+	float sen = a / h;
+	float rad = asin(sen);
+
+	float degrees = rad * 57.3;
+
+	return degrees;
+}
 
 void buildScene() {
 	//escena = new ObjetoCompuesto3D();
@@ -101,7 +114,8 @@ void initGL() {
 	GLfloat pos[] = {5.0, 12.0, 3.0, 1.0};
 	glLightfv(GL_LIGHT1, GL_POSITION, pos);
 	
-	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 26.74);
+	float angleLamp = calculateLampAngle(0.5, lampHeight);
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, angleLamp);
 	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 4.0);
 	GLfloat dir[] = {0.0,-1.0,0.0};
 	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, dir);
@@ -119,8 +133,11 @@ void initGL() {
 	//Niebla
 	glEnable(GL_FOG);
 	glFogi(GL_FOG_MODE, GL_LINEAR);
+	GLfloat color[]={0.0f,0.0f,1.0f,0.0f};
+	//glFogfv(GL_FOG_COLOR, color);
+	//glFogf(GL_FOG_DENSITY, 0.5f);
 	glFogi(GL_FOG_START, 20);
-	glFogi(GL_FOG_START, 50);
+	glFogi(GL_FOG_END, 50);
  }
 
 void display(void) {
@@ -180,6 +197,8 @@ void resize(int newWidth, int newHeight) {
 }
 
 void key(unsigned char key, int x, int y){
+	float angleLamp;
+
 	bool need_redisplay = true;
 	switch (key) {
 		case 27:  /* Escape key */
@@ -383,10 +402,16 @@ void key(unsigned char key, int x, int y){
 		case 'a': //Escalar lámpara
 			escena->getHijo(15)->getTAfin()->escalacion(1, 1.1, 1);
 			escena->getHijo(15)->getTAfin()->traslacion(0, -1, 0);
+			lampHeight *= 1.1;
+			angleLamp = calculateLampAngle(0.5, lampHeight);
+			glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, angleLamp);
 			break;
 		case 'z':
 			escena->getHijo(15)->getTAfin()->escalacion(1, 0.9, 1);
 			escena->getHijo(15)->getTAfin()->traslacion(0, 1, 0);
+			lampHeight *= 0.9;
+			angleLamp = calculateLampAngle(0.5, lampHeight);
+			glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, angleLamp);
 			break;
 
 		case 'q': //Encender/apagar lámpara
@@ -426,10 +451,6 @@ void key(unsigned char key, int x, int y){
 
 	if (need_redisplay)
 		glutPostRedisplay();
-}
-
-float calculateLampAngle(float a, float b){
-	//Con hipotenusa y cateto(a) halla angulo. sen(alfa)=a/h
 }
 
 int main(int argc, char *argv[]){
