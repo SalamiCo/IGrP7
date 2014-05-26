@@ -71,9 +71,12 @@ void Malla::dibuja(bool rellena, bool normales){
 			}*/
 			if(i >= 15){
 				//TODO: seleccionar la textura madera (método creado en main.cpp)
+				t.bindTexture(0);
 				glTexCoord3f(vertice[iV]->getX(), vertice[iV]->getY(), vertice[iV]->getZ());
 			} else {
 				//TODO: seleccionar la textura tapete (método creado en main.cpp)
+				t.bindTexture(1);
+				glTexCoord3f(vertice[iV]->getX(), vertice[iV]->getY(), vertice[iV]->getZ());
 			}
 
 			glVertex3f(vertice[iV]->getX(), vertice[iV]->getY(), vertice[iV]->getZ());

@@ -82,6 +82,7 @@
     <ClCompile Include="TCubo.cpp" />
     <ClCompile Include="TEsfera.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
+    <ClCompile Include="Textures.cpp" />
     <ClCompile Include="VerticeNormal.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +103,7 @@
     <ClInclude Include="TCubo.h" />
     <ClInclude Include="TEsfera.h" />
     <ClInclude Include="TextureLoader.h" />
+    <ClInclude Include="Textures.h" />
     <ClInclude Include="VerticeNormal.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

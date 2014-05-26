@@ -10,6 +10,7 @@
 #include "Matr.h"
 #include "Objeto3D.h"
 #include "TColor.h"
+#include "Textures.h"
 
 #include <windows.h>
 
@@ -30,6 +31,8 @@ protected:
 	Cara** cara;
 
 	GLfloat angleX, angleY, angleZ;
+
+	Textures t;
 
 public:
 	Malla(void);

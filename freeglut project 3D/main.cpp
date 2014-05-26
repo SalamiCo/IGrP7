@@ -19,6 +19,7 @@ using namespace std;
 #include "ObjetoCompuesto3D.h"
 #include "MesaBillar.h"
 #include "TextureLoader.h"
+#include "Textures.h"
 
 // Freeglut parameters
 // Flag telling us to keep processing events
@@ -51,7 +52,8 @@ GLdouble angleGiraZ = 0.0;
 
 float lampHeight = 1.0;
 
-GLuint texturas[2];
+//GLuint texturas[2];
+Textures t = Textures();
 
 PV3D d = PV3D(0.1, 0.1, 1, 0); //Para proyección oblicua
 
@@ -74,9 +76,9 @@ float calculateLampAngle(float a, float b){
 	return degrees;
 }
 
-void selectTexture(int i){
+/*void selectTexture(int i){
 	glBindTexture(GL_TEXTURE_2D, texturas[i]);
-}
+}*/
 
 void buildScene() {
 	//escena = new ObjetoCompuesto3D();
@@ -153,17 +155,17 @@ void initGL() {
 	cout<< width << endl;
 	cout<< height << endl;
 
-	glGenTextures(2, texturas);
+	//glGenTextures(2, texturas);
 	//glGenTextures(1, &textureID);
 
-	//glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 	//Leer en la variable textura, el archivo que contiene la imagen 
 	//usando la clase lectora
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 
 	//Textura mesa
-	glBindTexture(GL_TEXTURE_2D, texturas[0]);
+	glBindTexture(GL_TEXTURE_2D, t.getTexture(0)/*texturas[0]*/);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -175,7 +177,7 @@ void initGL() {
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
 
 	//Textura tapete
-	glBindTexture(GL_TEXTURE_2D, texturas[1]);
+	glBindTexture(GL_TEXTURE_2D, t.getTexture(1)/*texturas[1]*/);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data2);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
