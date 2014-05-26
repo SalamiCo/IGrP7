@@ -112,22 +112,6 @@ void initGL() {
     glLightfv(GL_LIGHT0, GL_AMBIENT, a);
 	GLfloat p[]={25.0, 25.0, 0.0, 1.0};	 
 	glLightfv(GL_LIGHT0, GL_POSITION, p);
-	
-	// Light1 - Lampara
-	glEnable(GL_LIGHT1);
-	GLfloat d1[]={1.0,1.0,1.0,1.0};
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, d1);
-    GLfloat a1[]={0.3f,0.3f,0.3f,1.0};
-    glLightfv(GL_LIGHT1, GL_AMBIENT, a1);
-	GLfloat pos[] = {5.0, 12.0, 3.0, 1.0};
-	glLightfv(GL_LIGHT1, GL_POSITION, pos);
-	
-	float angleLamp = calculateLampAngle(0.5, lampHeight);
-	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, angleLamp);
-	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 4.0);
-	GLfloat dir[] = {0.0,-1.0,0.0};
-	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, dir);
-	lamparaOn = true;
 
 	//Light2
 	glEnable(GL_LIGHT2);
@@ -211,6 +195,24 @@ void display(void) {
 
 	//Our code
 	escena->dibuja();
+
+	// Light1 - Lampara
+	if(lamparaOn == true){
+		glEnable(GL_LIGHT1);
+		GLfloat d1[]={1.0,1.0,1.0,1.0};
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, d1);
+		GLfloat a1[]={0.3f,0.3f,0.3f,1.0};
+		glLightfv(GL_LIGHT1, GL_AMBIENT, a1);
+		GLfloat pos[] = {5.0, 12.0, 3.0, 1.0};
+		glLightfv(GL_LIGHT1, GL_POSITION, pos);
+	
+		float angleLamp = calculateLampAngle(0.5, lampHeight);
+		glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, angleLamp);
+		glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 4.0);
+		GLfloat dir[] = {0.0,-1.0,0.0};
+		glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, dir);
+		//lamparaOn = true;
+	}
 	
 	glFlush();
 	glutSwapBuffers();
