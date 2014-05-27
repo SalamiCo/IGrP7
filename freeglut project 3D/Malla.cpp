@@ -61,20 +61,10 @@ void Malla::dibuja(bool rellena, bool normales){
 			glNormal3f(normal[iN]->getX(), normal[iN]->getY(), normal[iN]->getZ());
 
 			//Textura
-			/*if(i == 3){
-				switch (j) {
-					case 0: glTexCoord2f(0, 0); break;
-					case 1: glTexCoord2f(0, 1); break;
-					case 2: glTexCoord2f(1, 1); break;
-					case 3: glTexCoord2f(1, 0); break;
-				}
-			}*/
 			if(i >= 15){
-				//TODO: seleccionar la textura madera (método creado en main.cpp)
 				t.bindTexture(0);
 				glTexCoord3f(vertice[iV]->getX(), vertice[iV]->getY(), vertice[iV]->getZ());
 			} else {
-				//TODO: seleccionar la textura tapete (método creado en main.cpp)
 				t.bindTexture(1);
 				glTexCoord3f(vertice[iV]->getX(), vertice[iV]->getY(), vertice[iV]->getZ());
 			}

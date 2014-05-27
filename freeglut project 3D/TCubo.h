@@ -5,6 +5,7 @@
 #include "objetocuadrico.h"
 
 #include "TColor.h"
+#include "Textures.h"
 
 class TCubo : public ObjetoCuadrico
 {
